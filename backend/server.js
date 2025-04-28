@@ -18,4 +18,6 @@ app.get('/', (req, res) => {
     });
 });
 
+app.use('/api/users', require('./routes/userRoutes')); // usa o endpoint "/api/users" no arquivo "routes/userRoutes.js"
+
 app.listen(PORT, () => console.log(`Servidor iniciou na porta ${PORT}`));
