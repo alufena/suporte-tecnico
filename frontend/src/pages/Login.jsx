@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import { FaSignInAlt } from 'react-icons/fa';
 import { toast } from 'react-toastify';
+import { useSelector, useDispatch } from 'react-redux';
+import { login } from '../features/auth/authSlice';
 
 function Login() {
   const [formData, setFormData] = useState({
@@ -10,6 +12,10 @@ function Login() {
     password: '',
   });
   const { email, password } = formData;
+  const dispatch = useDispatch();
+  const { user, isLoading, isSuccess, message } = useSelector(
+    (state) => state.auth
+  );
   const onChange = (e) => {
     setFormData((prevState) => ({
       ...prevState,
@@ -18,6 +24,12 @@ function Login() {
   };
   const onSubmit = (e) => {
     e.preventDefault();
+    const userData = {
+      // pega dados do formulário (local state)
+      email,
+      password,
+    };
+    dispatch(login(userData)); // permite enviar a função em authSlice. agora ambos formulários estão conectados (register e login)
   };
   return (
     <>

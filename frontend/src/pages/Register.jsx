@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { FaUser } from 'react-icons/fa';
 import { toast } from 'react-toastify';
+import { useSelector, useDispatch } from 'react-redux'; // hook "useSelector" permite seleções do global state. "useDispatch" permite enviar ações
+import { register } from '../features/auth/authSlice';
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -10,6 +12,11 @@ function Register() {
     password2: '', // senha de confirmação do formulário
   });
   const { name, email, password, password2 } = formData; // desestruturação
+  const dispatch = useDispatch(); // irá despachar "register" e outras funções
+  const { user, isLoading, isSuccess, message } = useSelector(
+    // traz pedaços do global state em um componente através do hook "useSelector"
+    (state) => state.auth
+  );
   const onChange = (e) => {
     // parâmetro evento
     setFormData((prevState) => ({
@@ -22,13 +29,20 @@ function Register() {
     e.preventDefault();
     if (password !== password2) {
       toast.error('Senha não coincide');
+    } else {
+      const userData = {
+        name,
+        email,
+        password,
+      };
+      dispatch(register(userData)); // envia o register de "authSlice.js"
     }
   };
   return (
     <>
       <section className="heading">
         <h1>
-          <FaUser /> Cadastramento
+          <FaUser /> Cadastramento {/* {user} */}
         </h1>
         <p>Crie uma conta</p>
       </section>
