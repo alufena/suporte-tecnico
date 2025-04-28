@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FaUser } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import { useSelector, useDispatch } from 'react-redux'; // hook "useSelector" permite seleções do global state. "useDispatch" permite enviar ações
-import { register } from '../features/auth/authSlice';
+import { register, reset } from '../features/auth/authSlice'; // reset é um reducer que redefine os valores dos states para o padrão
+import { useNavigate } from 'react-router-dom';
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -13,10 +14,22 @@ function Register() {
   });
   const { name, email, password, password2 } = formData; // desestruturação
   const dispatch = useDispatch(); // irá despachar "register" e outras funções
-  const { user, isLoading, isSuccess, message } = useSelector(
+  const navigate = useNavigate();
+  const { user, isLoading, isError, isSuccess, message } = useSelector(
     // traz pedaços do global state em um componente através do hook "useSelector"
     (state) => state.auth
   );
+  useEffect(() => {
+    // traz todos pedaços de state
+    if (isError) {
+      toast.error(message); // "mesage" será definida no redux através do hook "useSelector"
+    }
+    if (isSuccess || user) {
+      // se sucesso e "user" preenchido
+      navigate('/'); // redireciona para página inicial
+    }
+    dispatch(reset()); // reseta para padrão
+  }, [isError, isSuccess, user, message, navigate, dispatch]);
   const onChange = (e) => {
     // parâmetro evento
     setFormData((prevState) => ({
