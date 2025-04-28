@@ -1,5 +1,5 @@
 {
-  "name": "suporte-tecnico",
+  "name": "support-desk",
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
@@ -9,9 +9,9 @@
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix frontend && npm run build --prefix frontend"
   },
-  "author": "",
-  "license": "ISC",
   "dependencies": {
+    "ajv": "^6.12.6",
+    "ajv-keywords": "^3.5.2",
     "bcryptjs": "^2.4.3",
     "colors": "^1.4.0",
     "concurrently": "^7.0.0",
