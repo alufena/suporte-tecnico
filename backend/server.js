@@ -7,8 +7,6 @@ const connectDB = require('./config/db');
 
 connectDB();
 
-// models são esquemas compostos pelos campos que estarão presentes na página
-
 const app = express();
 
 app.use(express.json()); // cria um pedaço de middleware com ".use"; permite agora enviar raw json
