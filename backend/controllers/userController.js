@@ -1,6 +1,7 @@
 const asyncHandler = require('express-async-handler'); // middleware; será para o mongoose, que retorna promise; assim, aqui não será usado ".then" e sim async await
 const bcrypt = require('bcryptjs'); // serve para fazer hash na senha
 const User = require('../models/userModel');
+const jwt = require('jsonwebtoken'); // jsonwebtoken (JWT) é a chave para acessar conteúdos futuros quando o usuário estiver autenticado; isso será guardado no frontend junto com react
 
 const registerUser = asyncHandler(async (req, res) => {
     // rota: /api/users; acesso público
@@ -31,6 +32,7 @@ const registerUser = asyncHandler(async (req, res) => {
             _id: user._id, // "_" porque é a forma que mongodb lida com ids
             name: user.name,
             email: user.email,
+            token: generateToken(user._id), // função separada que assina o token; ela precisa necessariamente do id passado
         });
     } else {
         res.status(400);
@@ -41,8 +43,30 @@ const registerUser = asyncHandler(async (req, res) => {
 
 const loginUser = asyncHandler(async (req, res) => {
     // rota: /api/users/login; acesso público
-    res.send('Rota de login');
+    const { email, password } = req.body; // pega os dados da body enviados
+    const user = await User.findOne({ email });
+    if (user && (await bcrypt.compare(password, user.password))) {
+        // se usuário é encontrado e a senha coincide... compara a senha em "texto plano" com a senha hash usando o método compare do pacote bcrypt
+        res.status(200).json({
+            // não será 201 porque não está criando nada
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+            token: generateToken(user._id), // precisa também estar no login
+        });
+    } else {
+        res.status(401); // erro, não autorizado
+        throw new Error('Algo deu errado');
+    }
+    // res.send('Rota de login');
 });
+
+const generateToken = (id) => {
+    return jwt.sign({ id }, process.env.JWT_SECRET, {
+        // jwt requer um "secret" guarda no .env e passado como argumento pelo método sign()
+        expiresIn: '30d', // token expira em 30 dias. agora ao registrar ou logar gera um token de volta
+    });
+};
 
 module.exports = {
     registerUser,
