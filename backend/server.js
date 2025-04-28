@@ -2,6 +2,12 @@ const express = require('express'); // sintaxe commonjs (module syntax). está t
 const dotenv = require('dotenv').config(); // método config; agora pode ir na pasta raiz e criar o arquivo ".env"
 const { errorHandler } = require('./middleware/errorMiddleware');
 const PORT = process.env.PORT || 5000; // camufla dados sensíveis graças ao "dotenv"; PORT é uma variável criada no arquivo ".env". aqui se pega o valor dessa variável PORT. tenta usar a porta do .env ou a 5000
+const colors = require('colors'); // permite o uso do pacote colors em todo projeto
+const connectDB = require('./config/db');
+
+connectDB();
+
+// models são esquemas compostos pelos campos que estarão presentes na página
 
 const app = express();
 
