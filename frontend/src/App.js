@@ -1,9 +1,10 @@
-<<<<<<< HEAD
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Header from './components/Header';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'
 
 function App() {
   return (
@@ -19,14 +20,8 @@ function App() {
           </Routes>
         </div>
       </Router>
+      <ToastContainer /> {/* permite uso do toast em qualquer canto do projeto */}
     </>
-=======
-function App() {
-  return (
-    <div>
-      My App
-    </div>
->>>>>>> 7878055cd64d177ebc30ae3f5449135b24c2d67c
   );
 }
 
