@@ -61,6 +61,18 @@ const loginUser = asyncHandler(async (req, res) => {
     // res.send('Rota de login');
 });
 
+const getMe = asyncHandler(async (req, res) => {
+    // pega usuário logado. rota: /api/users/me; acesso privado
+    // res.send('me');
+    const user = {
+        id: req.user._id,
+        email: req.user.email,
+        name: req.user.name
+    }
+    // res.status(200).json(req.user); // authMiddleware permite agora o acesso ao "req.user"
+    res.status(200).json(user); // versão desestruturada que pega campos específicos
+});
+
 const generateToken = (id) => {
     return jwt.sign({ id }, process.env.JWT_SECRET, {
         // jwt requer um "secret" guarda no .env e passado como argumento pelo método sign()
@@ -71,4 +83,5 @@ const generateToken = (id) => {
 module.exports = {
     registerUser,
     loginUser,
+    getMe
 };
