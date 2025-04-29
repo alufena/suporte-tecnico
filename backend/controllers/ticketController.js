@@ -16,6 +16,26 @@ const getTickets = asyncHandler(async (req, res) => {
     res.status(200).json(tickets);
 });
 
+const getTicket = asyncHandler(async (req, res) => {
+    // pega um único ticket do usuário; endpoint: /api/tickets/:id; acesso privado. GET request
+    const user = await User.findById(req.user.id);
+    if (!user) {
+        res.status(401);
+        throw new Error('Esse usuário não existe');
+    }
+    const ticket = await Ticket.findById(req.params.id); // findById() vem do acesso à URL; "params" ajuda nesse sentido
+    if (!ticket) {
+        res.status(404);
+        throw new Error('Esse ticket não existe');
+    }
+    if (ticket.user.toString() !== req.user.id) {
+        // limita essa operação apenas ao usário (dono do ticket)
+        res.status(401);
+        throw new Error('Algo deu errado');
+    }
+    res.status(200).json(ticket);
+});
+
 const createTicket = asyncHandler(async (req, res) => {
     // cria um novo ticket. rota: /api/tickets; acesso privado; POST request
     const { product, description } = req.body;
@@ -44,7 +64,56 @@ const createTicket = asyncHandler(async (req, res) => {
     );
 });
 
+const deleteTicket = asyncHandler(async (req, res) => {
+    // deleta ticket. DELETE request. endpoint: /api/tickets/:id; acesso privado
+    const user = await User.findById(req.user.id);
+    if (!user) {
+        res.status(401);
+        throw new Error('Esse usuário não existe');
+    }
+    const ticket = await Ticket.findById(req.params.id);
+    if (!ticket) {
+        res.status(404);
+        throw new Error('Esse ticket não existe');
+    }
+    if (ticket.user.toString() !== req.user.id) {
+        res.status(401);
+        throw new Error('Algo deu errado');
+    }
+    await ticket.remove(); // não existe necessidade de return nem de criar uma variável
+    res.status(200).json({ success: true });
+});
+
+const updateTicket = asyncHandler(async (req, res) => {
+    // atualiza um ticket. PUT request. endpoint: /api/tickets/:id. acesso privado
+    const user = await User.findById(req.user.id);
+    if (!user) {
+        res.status(401);
+        throw new Error('Esse usuário não existe');
+    }
+    const ticket = await Ticket.findById(req.params.id);
+    if (!ticket) {
+        res.status(404);
+        throw new Error('Esse ticket não existe');
+    }
+    if (ticket.user.toString() !== req.user.id) {
+        res.status(401);
+        throw new Error('Algo deu errado');
+    }
+    const updatedTicket = await Ticket.findByIdAndUpdate(
+        req.params.id, // pega o id da url. product (categoria) e descrição estarão na body
+        req.body,
+        {
+            new: true,
+        }
+    );
+    res.status(200).json(updatedTicket);
+});
+
 module.exports = {
     getTickets,
+    getTicket,
     createTicket,
+    deleteTicket,
+    updateTicket
 };
