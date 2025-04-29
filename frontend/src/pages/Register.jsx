@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 import { useSelector, useDispatch } from 'react-redux'; // hook "useSelector" permite seleções do global state. "useDispatch" permite enviar ações
 import { register, reset } from '../features/auth/authSlice'; // reset é um reducer que redefine os valores dos states para o padrão
 import { useNavigate } from 'react-router-dom';
+import Spinner from '../components/Spinner';
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -51,6 +52,9 @@ function Register() {
       dispatch(register(userData)); // envia o register de "authSlice.js"
     }
   };
+  if (isLoading) {
+    return <Spinner />;
+  }
   return (
     <>
       <section className="heading">

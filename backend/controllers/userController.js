@@ -16,7 +16,7 @@ const registerUser = asyncHandler(async (req, res) => {
     const userExists = await User.findOne({ email }); // continuação caso esteja tudo preenchido. aqui, vai procurar se usuário já existe. método findOne() vem do model User: vai procurar um documento/item. email sozinho é o mesmo que email: email
     if (userExists) {
         res.status(400); // erro cliente
-        throw new Error('Usuário já encontrado');
+        throw new Error('Esse usuário já existe');
     }
     const salt = await bcrypt.genSalt(10); // faz hash na senha. 10 rounds são passados
     const hashedPassword = await bcrypt.hash(password, salt); // await porque as funções retornam promise
