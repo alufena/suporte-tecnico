@@ -28,7 +28,8 @@ app.get('/', (req, res) => {
 
 // rotas
 app.use('/api/users', require('./routes/userRoutes')); // usa o endpoint "/api/users" no arquivo "routes/userRoutes.js"
+app.use('/api/tickets', require('./routes/ticketRoutes'));
 app.use(errorHandler); // quando deixar um campo de cadastro vazio, ao invés de um arquivo html, agora envia de volta um json no postman. mais informações para debugar e não será mostrada em produção
-app.use('/api/users', require('./routes/userRoutes')); // usa o endpoint "/api/users" no arquivo "routes/userRoutes.js"
+
 
 app.listen(PORT, () => console.log(`Servidor iniciou na porta ${PORT}`));

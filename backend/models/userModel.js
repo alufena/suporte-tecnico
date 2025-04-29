@@ -5,16 +5,16 @@ const userSchema = mongoose.Schema(
     {
         name: {
             type: String,
-            required: [true, 'Por favor adicione um nome'], // poderia ser só true
+            required: [true, 'Por favor, adicione um nome'], // poderia ser só true
         },
         email: {
             type: String,
-            required: [true, 'Por favor adicione um e-mail'],
+            required: [true, 'Por favor, adicione um e-mail'],
             unique: true,
         },
         password: {
             type: String,
-            required: [true, 'Por favor adicione uma senha'],
+            required: [true, 'Por favor, adicione uma senha'],
         },
         isAdmin: {
             // não será usado no frontend (ui), mas em caso dos usuários quererem ser admin para fazer certas coisas...
