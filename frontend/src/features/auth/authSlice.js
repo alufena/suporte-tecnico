@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import authService from './authService';
 
 // dar F5 faz o user ficar null; precisa não só salvar a user ao localstorage, mas fazer o user em um state inicial caso ele exista
-const user = JSON.parse(localStorage.getItem('user')) // aqui irá pegar o usuário do localstorage
+const user = JSON.parse(localStorage.getItem('user')); // aqui irá pegar o usuário do localstorage
 
 const initialState = {
     user: user ? user : null, // se existe o user, use o user; caso contrário, use o null
@@ -36,6 +36,10 @@ export const login = createAsyncThunk('auth/login', async (user, thunkAPI) => {
     console.log(user);
 });
 
+export const logout = createAsyncThunk('auth/logout', async () => {
+    await authService.logout(); // será chamado pelo header
+});
+
 export const authSlice = createSlice({
     name: 'auth',
     initialState,
@@ -66,7 +70,10 @@ export const authSlice = createSlice({
                 state.isError = true;
                 state.message = action.payload; // se sabe que o payload vai ter essa mensagem porque está no state rejected. será chamada mais em cima do código "return thunkAPI.rejectWithValue(message)". bom porque não precisa lidar com tudo manualmente por conta do redux toolkit
                 state.user = null;
-            });
+            })
+            .addCase(logout.fulfilled, (state) => {
+                state.user = null;
+            })
     },
 });
 
