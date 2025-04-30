@@ -29,7 +29,7 @@ function Tickets() {
       <BackButton url="/" />
       <h1>Tickets</h1>
       <div className="tickets">
-        <div className="ticket-hea">
+        <div className="ticket-headings">
           <div>Data</div>
           <div>Categoria</div>
           <div>Situação</div>
