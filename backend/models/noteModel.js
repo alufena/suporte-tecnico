@@ -20,9 +20,6 @@ const noteSchema = mongoose.Schema(
             type: Boolean,
             default: false
         },
-        userName: {
-            type: String, // armazena o nome do usuário
-        },
         staffId: {
             type: String,
         },

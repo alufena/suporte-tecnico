@@ -1,8 +1,8 @@
-// import { useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useEffect, useRef } from 'react';
 
 function NoteItem({ note }) {
-  // const { user } = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.auth);
   const textareaRef = useRef(null);
   // Ajusta a altura da textarea automaticamente
   useEffect(() => {
@@ -22,12 +22,7 @@ function NoteItem({ note }) {
     >
       <h4>
         Observações de{' '}
-        {/* {note.isStaff ? <span>suporte</span> : <span>{user.name}</span>} */}
-        {note.isStaff ? (
-          <span>suporte</span>
-        ) : (
-          <span>{note.userName || 'Usuário'}</span>
-        )}
+        {note.isStaff ? <span>suporte</span> : <span>{user.name}</span>}
         <textarea
           ref={textareaRef} // Agora textareaRef está definido
           className="note-textarea"
