@@ -11,6 +11,7 @@ const initialState = {
 };
 
 export const createTicket = createAsyncThunk(
+    // cria um ticket novo
     'tickets/create',
     async (ticketData, thunkAPI) => {
         try {
@@ -26,6 +27,26 @@ export const createTicket = createAsyncThunk(
             return thunkAPI.rejectWithValue(message);
         }
         // precisa enviar o token e acessar a rota protegida para enviar a informação
+    }
+);
+
+export const getTickets = createAsyncThunk(
+    // pega os tickets do usuário
+    'tickets/getAll',
+    async (_, thunkAPI) => {
+        // "ticketData" foi substituído pelo placeholder "_", ou seja, significa que não passará nada mas continua acessando o thunkAPI (p/ pegar o token)
+        try {
+            const token = thunkAPI.getState().auth.user.token;
+            return await ticketService.getTickets(token);
+        } catch (error) {
+            const message =
+                (error.response &&
+                    error.response.data &&
+                    error.response.data.message) ||
+                error.message ||
+                error.toString();
+            return thunkAPI.rejectWithValue(message);
+        }
     }
 );
 
@@ -48,9 +69,23 @@ export const ticketSlice = createSlice({
                 state.isLoading = false;
                 state.isError = true;
                 state.message = action.payload;
+            })
+            .addCase(getTickets.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(getTickets.fulfilled, (state, action) => {
+                // será passado "action" porque "getTickets" pega informações
+                state.isLoading = false;
+                state.isSuccess = true;
+                state.tickets = action.payload; // ticket = pedaço de state para um único objeto
+            })
+            .addCase(getTickets.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = true;
+                state.message = action.payload;
             });
     },
 });
 
 export const { reset } = ticketSlice.actions; // aqui exporta para "src/app/store.js"
-export default ticketSlice.reducer
+export default ticketSlice.reducer;

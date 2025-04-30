@@ -237,19 +237,19 @@ h3 {
   text-align: center;
 }
 
-.status-new {
+.status-novo {
   background-color: green;
   color: #fff;
   border-radius: 10px;
 }
 
-.status-open {
+.status-aberto {
   background-color: steelblue;
   color: #fff;
   border-radius: 10px;
 }
 
-.status-closed {
+.status-fechado {
   background-color: darkred;
   color: #fff;
   border-radius: 10px;
