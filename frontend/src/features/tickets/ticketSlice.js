@@ -68,6 +68,24 @@ export const getTicket = createAsyncThunk(
     }
 );
 
+export const closeTicket = createAsyncThunk(
+    'tickets/close',
+    async (ticketId, thunkAPI) => {
+        try {
+            const token = thunkAPI.getState().auth.user.token;
+            return await ticketService.closeTicket(ticketId, token);
+        } catch (error) {
+            const message =
+                (error.response &&
+                    error.response.data &&
+                    error.response.data.message) ||
+                error.message ||
+                error.toString();
+            return thunkAPI.rejectWithValue(message);
+        }
+    }
+);
+
 export const ticketSlice = createSlice({
     name: 'ticket',
     initialState,
@@ -114,6 +132,14 @@ export const ticketSlice = createSlice({
                 state.isLoading = false;
                 state.isError = true;
                 state.message = action.payload;
+            })
+            .addCase(closeTicket.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.tickets.map((ticket) =>
+                    ticket._id === action.payload._id
+                        ? (ticket.status = 'fechado')
+                        : ticket
+                ); // "tickets" é o array que será iterado por map e por lá definido o ticket correto através do id vindo do payload (action). dessa forma se consegue por o status como "fechado". aqui só faz efeito na UI; reflete na tela sem precisar recarregar a página
             });
     },
 });
