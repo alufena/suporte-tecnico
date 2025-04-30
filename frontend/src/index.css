@@ -285,6 +285,10 @@ h3 {
   border-radius: 5px;
 }
 
+.ticket-desc:focus {
+  outline: none;
+}
+
 .note {
   border: 1px solid #e6e6e6;
   border-radius: 5px;
@@ -301,6 +305,11 @@ h3 {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
+}
+
+/* Remove o contorno azul ao focar */
+.note-textarea:focus {
+  outline: none;
 }
 
 .note-date {

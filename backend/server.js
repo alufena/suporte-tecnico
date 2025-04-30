@@ -13,16 +13,14 @@ const app = express();
 app.use(express.json()); // cria um pedaço de middleware com ".use"; permite agora enviar raw json
 app.use(express.urlencoded({ extended: false })); // middleware que permite enviar x-www-form-urlencoded
 
-app.get('/', (req, res) => {
-    // cria uma rota com Express
-    // res.send('teste'); // poderia ser "res.json" no lugar de "res.send"
-    // res.json({
-    //     message: 'teste',
-    // });
-    // res.status(201).json({ // status 201 cria um novo arquivo
-    //     message: 'teste',
-    // });
-});
+// cria uma rota com Express
+// res.send('teste'); // poderia ser "res.json" no lugar de "res.send"
+// res.json({
+//     message: 'teste',
+// });
+// res.status(201).json({ // status 201 cria um novo arquivo
+//     message: 'teste',
+// });
 
 // rotas
 app.use('/api/users', require('./routes/userRoutes')); // usa o endpoint "/api/users" no arquivo "routes/userRoutes.js"
@@ -36,8 +34,10 @@ if (process.env.NODE_ENV === 'production') {
         res.sendFile(__dirname, '../', 'frontend', 'build', 'index.html')
     ); // cria rota. "*" significa tudo exceto as rotas criadas mais acima
 } else {
-    res.status(200).json({
-        message: 'Bem-vindo ao API de Suporte Técnico',
+    app.get('/', (req, res) => {
+        res.status(200).json({
+            message: 'Bem-vindo ao API de Suporte Técnico',
+        });
     });
 }
 

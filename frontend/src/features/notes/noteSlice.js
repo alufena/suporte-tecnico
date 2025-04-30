@@ -3,7 +3,7 @@ import noteService from './noteService';
 
 const initialState = {
     notes: [],
-    isError: Boolean,
+    isError: false,
     isSuccess: false,
     isLoading: false,
     message: '',
