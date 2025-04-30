@@ -6,7 +6,11 @@ import Spinner from '../components/Spinner';
 import NoteItem from '../components/NoteItem';
 import { useParams, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { getNotes, reset as notesReset } from '../features/notes/noteSlice';
+import {
+  getNotes,
+  createNote,
+  reset as notesReset,
+} from '../features/notes/noteSlice';
 import Modal from 'react-modal';
 import { FaPlus } from 'react-icons/fa';
 import { FaTimes } from 'react-icons/fa';
@@ -55,7 +59,8 @@ function Ticket() {
   };
   const onNoteSubmit = (e) => {
     e.preventDefault();
-    console.log('Enviado');
+    // console.log('Enviado');
+    dispatch(createNote({ noteText, ticketId }));
     closeModal();
   };
   const openModal = () => setModalIsOpen(true);
@@ -86,7 +91,24 @@ function Ticket() {
         <hr />
         <div className="ticket-desc">
           <h3>Descrição do problema </h3>
-          <p>{ticket.description}</p>
+          <textarea
+            className="ticket-desc"
+            value={ticket.description || ''} // Garante que não haja erro se ticket.description for undefined
+            readOnly
+            style={{
+              resize: 'none',
+              width: '100%',
+              minHeight: '100px',
+              height: 'auto',
+              border: 'none',
+              backgroundColor: 'transparent',
+              fontFamily: 'inherit',
+              fontSize: 'inherit',
+              padding: '0',
+            }}
+          >
+            {ticket.description}
+          </textarea>
         </div>
       </header>
       {ticket.status !== 'fechado' && (
@@ -125,9 +147,13 @@ function Ticket() {
           </div>
         </form>
       </Modal>
-      {notes.map((note) => (
-        <NoteItem key={note._id} note={note} />
-      ))}
+      {ticket.status !== 'fechado' && (
+        <>
+          {notes.map((note) => (
+            <NoteItem key={note._id} note={note} />
+          ))}
+        </>
+      )}
       {ticket.status !== 'fechado' && (
         <button className="btn btn-block btn-danger" onClick={onTicketClose}>
           Encerrar ticket

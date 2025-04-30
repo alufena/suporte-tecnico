@@ -12,7 +12,7 @@ function NoteItem({ note }) {
     >
       <h4>
         Observações de{' '}
-        {note.isStaff ? <span>moderador</span> : <span>{user.name}</span>}
+        {note.isStaff ? <span>suporte</span> : <span>{user.name}</span>}
         <p>{note.text}</p>
         <div className="note-date">
           {new Date(note.createdAt).toLocaleString('pt-br')}

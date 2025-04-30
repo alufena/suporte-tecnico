@@ -258,6 +258,7 @@ h3 {
 .ticket-page {
   position: relative;
   text-align: left;
+  padding-bottom: 20px;
 }
 
 .ticket-page h2 {
