@@ -26,7 +26,7 @@ function App() {
           </Routes>
         </div>
       </Router>
-      <ToastContainer />{' '}
+      <ToastContainer />
       {/* permite uso do toast em qualquer canto do projeto */}
     </>
   );

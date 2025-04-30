@@ -1,17 +1,42 @@
-import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { createTicket, reset } from '../features/tickets/ticketSlice';
+import Spinner from '../components/Spinner';
+import BackButton from '../components/BackButton';
 
 function NewTicket() {
   const { user } = useSelector((state) => state.auth); // antes de pegar e setar o state, será pego o user do global state
+  const { isLoading, isError, isSuccess, message } = useSelector(
+    (state) => state.tickets
+  );
   const [name, setName] = useState(user.name);
   const [email, setEmail] = useState(user.email);
   const [product, setProduct] = useState('Suporte geral do Windows 10 ou 11');
   const [description, setDescription] = useState('');
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (isError) {
+      toast.error(message);
+    }
+    if (isSuccess) {
+      dispatch(reset());
+      navigate('/tickets');
+    }
+  }, [dispatch, isError, isSuccess, navigate, message]);
   const onSubmit = (e) => {
+    // "ticketService" conectado com "ticketSlice" permite trazer "createTicket", e, com isso, enviar através do form
     e.preventDefault();
+    dispatch(createTicket({ product, description }));
   };
+  if (isLoading) {
+    return <Spinner />;
+  }
   return (
     <>
+      <BackButton url="/" />
       <section className="heading"></section>
       <h1>Crie um novo ticket</h1>
       <p>Preencha os campos abaixo</p>
