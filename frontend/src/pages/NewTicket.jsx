@@ -23,7 +23,7 @@ function NewTicket() {
     }
     if (isSuccess) {
       dispatch(reset());
-      navigate('/tickets');
+      navigate('/new-ticket');
     }
   }, [dispatch, isError, isSuccess, navigate, message]);
   const onSubmit = (e) => {

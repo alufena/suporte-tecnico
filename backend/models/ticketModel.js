@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+
 const ticketSchema = mongoose.Schema(
     // cada ticket estará conectado a um usuário
     {
