@@ -16,7 +16,7 @@ const getNotes = asyncHandler(async (req, res) => {
         res.status(401);
         throw new Error('Algo deu errado');
     }
-    const notes = await Note.find({ tickets: req.params.ticketId });
+    const notes = await Note.find({ ticket: req.params.ticketId });
     res.status(200).json(notes);
 });
 
