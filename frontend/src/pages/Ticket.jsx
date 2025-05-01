@@ -19,6 +19,8 @@ const customStyles = {
   content: {
     width: '90%', // Usa 90% da largura da tela
     maxWidth: '600px', // Limita a largura máxima a 600px em telas maiores
+    maxHeight: '80vh', // Limita a altura máxima a 80% da altura da tela
+    overflowY: 'auto', // Permite rolagem vertical se o conteúdo for muito longo
     top: '50%',
     left: '50%',
     right: 'auto',
