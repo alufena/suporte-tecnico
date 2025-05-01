@@ -17,14 +17,17 @@ import { FaTimes } from 'react-icons/fa';
 
 const customStyles = {
   content: {
-    width: '600px',
+    width: '90%', // Usa 90% da largura da tela
+    maxWidth: '600px', // Limita a largura máxima a 600px em telas maiores
     top: '50%',
     left: '50%',
     right: 'auto',
     bottom: 'auto',
-    marginRight: '-50%',
+    marginRight: '0', // Remove o marginRight que pode estar causando problemas
     transform: 'translate(-50%, -50%)',
     position: 'relative',
+    padding: '20px', // Adiciona um padding para melhor aparência
+    boxSizing: 'border-box', // Garante que o padding não aumente a largura
   },
 };
 

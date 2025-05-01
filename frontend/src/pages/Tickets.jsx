@@ -33,7 +33,6 @@ function Tickets() {
           <div>Data</div>
           <div>Categoria</div>
           <div>Situação</div>
-          <div></div>
         </div>
         {tickets.map((ticket) => (
           <TicketItem key={ticket._id} ticket={ticket} />
